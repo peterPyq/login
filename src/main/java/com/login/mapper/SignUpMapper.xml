@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.login.dao.ISignUpDao">
+
+	<!--用户登录 -->
+	<select id="getSignUp" parameterType="java.util.Map" resultType="com.login.entity.SignUp">
+		SELECT 
+			SignUpID,
+			LoginName,
+			Password,
+			Name,
+			SignUpDateTime
+		FROM
+			t_signup
+		WHERE
+			LoginName=#{loginName,jdbcType=VARCHAR}
+		AND
+			Password=#{password,jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="addSignUp" parameterType="com.login.entity.SignUp" >
+		INSERT INTO t_signup (
+			LoginName,
+			PASSWORD,
+			NAME,
+			SignUpDateTime
+		)
+		VALUES(
+			#{loginName,jdbcType=NVARCHAR},
+			#{password,jdbcType=NVARCHAR},
+			#{name,jdbcType=NVARCHAR},
+			#{signUpDateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+</mapper>

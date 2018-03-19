@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.login.dao.IConferenceDao">
+
+	<!--根据主键查询 -->
+	<select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultType="com.login.entity.Conference">
+		SELECT 
+			ConferenceID,
+			ConferenceName,
+			ChineseConferenceLocation,
+			ConferenceBeginningDateTime,
+			ConferenceEndingDateTime,
+			SignUpID,
+			CreatedDateTime,
+			ConferenceType
+		FROM
+			t_conference
+		WHERE
+			ConferenceID=#{conferenceID,jdbcType=DECIMAL}
+	</select>
+	
+	<!--根据ChineseConferenceLocation模糊查询 -->
+	<select id="selectByLocaltion" parameterType="String" resultType="com.login.entity.Conference">
+		SELECT 
+			ConferenceID,
+			ConferenceName,
+			ChineseConferenceLocation,
+			ConferenceBeginningDateTime,
+			ConferenceEndingDateTime,
+			SignUpID,
+			CreatedDateTime,
+			ConferenceType
+		FROM
+			t_conference
+		WHERE
+			ChineseConferenceLocation like #{chineseConferenceLocation,jdbcType=DECIMAL}
+	</select>
+	
+	<!--根据ConferenceName模糊查询 -->
+	<select id="selectByName" parameterType="String" resultType="com.login.entity.Conference">
+		SELECT 
+			ConferenceID,
+			ConferenceName,
+			ChineseConferenceLocation,
+			ConferenceBeginningDateTime,
+			ConferenceEndingDateTime,
+			SignUpID,
+			CreatedDateTime,
+			ConferenceType
+		FROM
+			t_conference
+		WHERE
+			ConferenceName like #{conferenceName,jdbcType=DECIMAL}
+	</select>
+	
+	
+	<!--根据会议类型查询 -->
+	<select id="selectByType" parameterType="String" resultType="com.login.entity.Conference">
+		SELECT 
+			ConferenceID,
+			ConferenceName,
+			ChineseConferenceLocation,
+			ConferenceBeginningDateTime,
+			ConferenceEndingDateTime,
+			SignUpID,
+			CreatedDateTime,
+			ConferenceType
+		FROM
+			t_conference
+		WHERE
+			ConferenceType=#{conferenceType,jdbcType=VARCHAR}
+	</select>
+	
+	<!--根据日期查询最近的会议 -->
+	<select id="selectRecentConference" parameterType="java.util.Date" resultType="com.login.entity.Conference">
+		SELECT 
+			ConferenceID,
+			ConferenceName,
+			ChineseConferenceLocation,
+			ConferenceBeginningDateTime,
+			ConferenceEndingDateTime,
+			SignUpID,
+			CreatedDateTime,
+			ConferenceType
+		FROM
+			t_conference
+		WHERE
+			ConferenceBeginningDateTime>=#{recentDate,jdbcType=TIMESTAMP}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+	    delete from t_conference
+	    where ConferenceID = #{conferenceID,jdbcType=DECIMAL}
+    </delete>
+  
+	<update id="updateByPrimaryKey" parameterType="com.login.entity.Conference">
+	    update t_conference
+	    set 
+	    <trim suffixOverrides=",">
+	    	<if test="conferenceName != null">
+        		ConferenceName = #{conferenceName,jdbcType=VARCHAR},
+      		</if>
+	    	<if test="chineseConferenceLocation != null">
+        		ChineseConferenceLocation = #{chineseConferenceLocation,jdbcType=VARCHAR},
+      		</if>
+      		<if test="conferenceBeginningDateTime != null">
+        		ConferenceBeginningDateTime = #{conferenceBeginningDateTime,jdbcType=TIMESTAMP},
+      		</if>
+      		<if test="conferenceEndingDateTime != null">
+        		ConferenceEndingDateTime = #{conferenceEndingDateTime,jdbcType=TIMESTAMP},
+      		</if>
+      		<if test="createdDateTime != null">
+        		CreatedDateTime = #{createdDateTime,jdbcType=TIMESTAMP},
+      		</if>
+      	</trim>
+	    where 
+	    	ConferenceID = #{conferenceID,jdbcType=DECIMAL}
+    </update>
+    
+	<insert id="insert" parameterType="com.login.entity.Conference" >
+		INSERT INTO t_conference (
+			ConferenceName,
+			ChineseConferenceLocation,
+			ConferenceBeginningDateTime,
+			ConferenceEndingDateTime,
+			SignUpID,
+			ConferenceType,
+			CreatedDateTime
+		)VALUES(
+			#{conferenceName,jdbcType=VARCHAR},
+	    	#{chineseConferenceLocation,jdbcType=VARCHAR},
+			#{conferenceBeginningDateTime,jdbcType=TIMESTAMP},
+			#{conferenceEndingDateTime,jdbcType=TIMESTAMP},
+			#{signUpID,jdbcType=DECIMAL},
+			#{conferenceType,jdbcType=VARCHAR},
+			#{createdDateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+</mapper>
